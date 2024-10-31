@@ -1,6 +1,7 @@
 import express from "express";
 import { createHandler } from "graphql-http/lib/use/express";
 import { buildSchema } from "graphql";
+import path from "path";
 
 // Construct a schema, using GraphQL schema language
 const schema = buildSchema(`
@@ -17,9 +18,8 @@ const root = {
 };
 
 const app = express();
-
-// Create and use the GraphQL handler.
-app.all(
+app.use(express.static(path.resolve(__dirname, "react")));
+app.post(
   "/graphql",
   createHandler({
     schema: schema,
