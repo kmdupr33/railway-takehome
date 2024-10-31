@@ -21,6 +21,10 @@ function App() {
 
 function LoginSignup() {
   const { config } = useAuthorizer();
+  // There's a bug in authorizer. :(
+  // Setting clientID above is not sufficient for it to be set in the config used by this
+  // component.
+  config.client_id = import.meta.env.VITE_AUTHORIZER_CLIENT_ID;
   console.log(`client_id: ${config.client_id}`);
   return <Authorizer/>
 }
