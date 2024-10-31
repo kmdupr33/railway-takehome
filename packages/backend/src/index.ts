@@ -21,7 +21,7 @@ const root = {
 
 const app = express();
 app.use(express.static(path.resolve(__dirname, "react")));
-app.use("/auth", createProxyMiddleware({ target: process.env.AUTHORIZER_URL }));
+app.use("/auth/graphql", createProxyMiddleware({ target: process.env.AUTHORIZER_URL }));
 app.post(
   "/graphql",
   auth_middleware,
