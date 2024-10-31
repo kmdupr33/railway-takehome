@@ -21,7 +21,7 @@ function App() {
 
 function LoginSignup() {
   const { config } = useAuthorizer();
-  console.log(config.client_id);
+  console.log(`client_id: ${config.client_id}`);
   return <Authorizer/>
 }
 
