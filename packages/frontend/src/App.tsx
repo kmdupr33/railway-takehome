@@ -5,7 +5,6 @@ import {
   useAuthorizer,
 } from '@authorizerdev/authorizer-react'
 function App() {
-  console.log(import.meta.env.VITE_AUTHORIZER_CLIENT_ID);
   return (
     <AuthorizerProvider
       config={{
@@ -21,11 +20,14 @@ function App() {
 }
 
 function LoginSignup() {
+  const { config } = useAuthorizer();
+  console.log(config.client_id);
   return <Authorizer/>
 }
 
 function Profile() {
   const { user } = useAuthorizer()
+
  
   if (user) {
     return <div>{user.email}</div>
