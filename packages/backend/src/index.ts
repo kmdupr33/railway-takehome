@@ -3,7 +3,7 @@ import { createHandler } from "graphql-http/lib/use/express";
 import { buildSchema } from "graphql";
 import path from "path";
 import auth_middleware from "./auth_middleware";
-import proxy from 'express-http-proxy';
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 // Construct a schema, using GraphQL schema language
 const schema = buildSchema(`
@@ -21,7 +21,7 @@ const root = {
 
 const app = express();
 app.use(express.static(path.resolve(__dirname, "react")));
-app.use("/auth", proxy(process.env.AUTHORIZER_URL));
+app.use("/auth", createProxyMiddleware({ target: process.env.AUTHORIZER_URL }));
 app.post(
   "/graphql",
   auth_middleware,
