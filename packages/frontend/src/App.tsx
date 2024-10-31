@@ -5,6 +5,7 @@ import {
   useAuthorizer,
 } from '@authorizerdev/authorizer-react'
 function App() {
+  console.log(import.meta.env.VITE_AUTHORIZER_CLIENT_ID);
   return (
     <AuthorizerProvider
       config={{
