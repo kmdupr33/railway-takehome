@@ -12,16 +12,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function SpinupWizard() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div>
-      <h1>Time to spin up a container!</h1>
+    <div className="p-4">
+      <h1 className="text-3xl font-medium">Time to spin up a container!</h1>
       <p>First, pick a project:</p>
-      {data.projectListItems.map(({ name, id }, i) => (
-        <div key={i}>
-          <Link className="underline" to={`projects/${id}/environments`}>
+      <hr />
+      <div className="py-4">
+        {data.projectListItems.map(({ name, id }, i) => (
+          <Link key={i} to={`projects/${id}/environments`}>
             Name: {name} ID: {id}
           </Link>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
