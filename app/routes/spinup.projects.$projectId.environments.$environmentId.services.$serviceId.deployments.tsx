@@ -56,31 +56,32 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
 export default function Deployments() {
   const { deployments } = useLoaderData<typeof loader>();
-  async function subscribe() {
-    const subscription = client.iterate<{ deployment: { status: string } }>({
-      query: /* GraphQL */ `subscription {
-          deployment(id: "${deployments[0].id}") {
-            status
-          }
-        }
-      `,
-    });
-    for await (const e of subscription) {
-      console.log(e);
-      if (
-        ["SUCCESS", "FAILED", "CRASHED", "REMOVED", "SLEEPING"].includes(
-          // data?.deployment.status,
-          "",
-        )
-      ) {
-        console.log("complete");
-        break;
-      }
-    }
-  }
-  useEffect(() => {
-    subscribe();
-  }, []);
+  // TODO: Figure out why GraphQL subscription isn't working.
+  // async function subscribe() {
+  //   const subscription = client.iterate<{ deployment: { status: string } }>({
+  //     query: /* GraphQL */ `subscription {
+  //         deployment(id: "${deployments[0].id}") {
+  //           status
+  //         }
+  //       }
+  //     `,
+  //   });
+  //   for await (const e of subscription) {
+  //     console.log(e);
+  //     if (
+  //       ["SUCCESS", "FAILED", "CRASHED", "REMOVED", "SLEEPING"].includes(
+  //         // data?.deployment.status,
+  //         "",
+  //       )
+  //     ) {
+  //       console.log("complete");
+  //       break;
+  //     }
+  //   }
+  // }
+  // useEffect(() => {
+  //   subscribe();
+  // }, []);
   if (deployments.length === 0) {
     return <NewDeployment />;
   }
