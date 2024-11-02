@@ -33,16 +33,8 @@ export default function EnvironmentPicker() {
             Name: {serviceName} ID: {serviceId}
           </Link>
           <Form method="post">
-            <input
-              type="hidden"
-              id="serviceId"
-              name="serviceId"
-              value={serviceId}
-            />
-            <button
-              type="submit"
-              className="btn-primary"
-            >
+            <input type="hidden" name="serviceId" value={serviceId} />
+            <button type="submit" className="btn-primary">
               Deploy
             </button>
           </Form>
