@@ -27,7 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const email = formData.get("email");
   const password = formData.get("password");
   const railwayToken = formData.get("railway-token");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/spinup");
+  const redirectTo = safeRedirect(formData.get("redirectTo"), "/spinup/projects");
 
   const errors: Errors = {
     email: null,
