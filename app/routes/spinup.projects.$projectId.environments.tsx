@@ -1,5 +1,5 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { getEnvironments, getServices } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 
@@ -16,9 +16,9 @@ export default function EnvironmentPicker() {
       <p>Now, pick an environment:</p>
       {data.environments.map(({ name, id }, i) => (
         <div key={i}>
-          <Link className="lr-list-item" to={`${id}/services`}>
+          <NavLink className="lr-list-item" to={`${id}/services`}>
             Name: {name} ID: {id}
-          </Link>
+          </NavLink>
         </div>
       ))}
       <Outlet/>

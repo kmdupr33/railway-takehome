@@ -16,9 +16,9 @@ export default function Projects() {
       <p>First, pick a project:</p>
       <div>
         {data.projectListItems.map(({ name, id }, i) => (
-          <Link className="lr-list-item" key={i} to={`${id}/environments`}>
+          <NavLink className="lr-list-item" key={i} to={`${id}/environments`}>
             Name: {name} ID: {id}
-          </Link>
+          </NavLink>
         ))}
       </div>
       <Outlet />

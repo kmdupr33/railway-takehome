@@ -15,7 +15,7 @@ export async function removeDeployment({ userId, deploymentId }) {
   return { deployRemove: data.deploymentRemove };
 }
 
-export async function getDeployment({
+export async function getDeployments({
   userId,
   serviceId,
   projectId,
@@ -26,7 +26,7 @@ export async function getDeployment({
     /* GraphQL */ `
     {
       deployments(
-        first: 1
+        first: 5
         input: {
           projectId: "${projectId}"
           environmentId: "${environmentId}"
@@ -45,7 +45,7 @@ export async function getDeployment({
   `,
   );
   const { data } = await res.json();
-  return { deployment: data.deployments.edges[0].node };
+  return { deployments: data.deployments.edges.map(({node}) => node) };
 }
 
 export async function deployServiceInstance({
@@ -64,7 +64,8 @@ export async function deployServiceInstance({
       }
     `,
   );
-  const { data } = await res.json();
+  const { data, errors } = await res.json();
+  console.log(errors);
   return { serviceInstanceDeploy: data.serviceInstanceDeploy };
 }
 

@@ -13,6 +13,10 @@
   }
   /* prefix with "lr" (abbreviation of "LightRail," the name of this app) to avoid conflict w/ tialwind builtin class list-item */
   .lr-list-item {
-    @apply block h-full rounded-lg bg-[hsl(0,0%,98%)] p-6 hover:bg-gray-100 mb-4
+    @apply block rounded-lg bg-[hsl(0,0%,98%)] p-6 hover:bg-gray-100 mb-4
+  }
+
+  .lr-list-item.active {
+    @apply bg-green-50
   }
 }
