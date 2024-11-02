@@ -2,6 +2,19 @@ import type { User } from "@prisma/client";
 
 import { railwayGqlQuery } from "~/utils";
 
+export async function removeDeployment({ userId, deploymentId }) {
+  const res = await railwayGqlQuery(
+    userId,
+    /* GraphQL */ `
+      mutation {
+        deploymentRemove(id: "${deploymentId}")
+      }
+    `,
+  );
+  const { data } = await res.json();
+  return { deployRemove: data.deploymentRemove };
+}
+
 export async function getDeployment({
   userId,
   serviceId,
