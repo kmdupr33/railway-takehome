@@ -28,10 +28,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return json({ deployments });
 };
 
-const client = createClient({
-  url: "wss://backboard.railway.app/graphql/v2",
-});
-
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
   switch (request.method) {
