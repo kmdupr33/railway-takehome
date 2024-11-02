@@ -141,7 +141,7 @@ export default function LoginPage() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="btn-primary"
+            className="btn-primary w-full"
           >
             Log in
           </button>

@@ -187,7 +187,7 @@ export default function Join() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="btn-primary"
+            className="btn-primary w-full"
           >
             Create Account
           </button>
