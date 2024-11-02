@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: hsl(250, 24%, 9%);
-}
-
 /* Grabbed these styles from railway.app */
 @layer components {
   .btn-primary {
