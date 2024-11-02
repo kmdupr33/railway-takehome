@@ -3,7 +3,6 @@ import {
   json,
   LoaderFunctionArgs,
 } from "@remix-run/node";
-import { createClient } from "graphql-ws";
 import {
   useFetcher,
   useLoaderData,
