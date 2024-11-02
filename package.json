@@ -26,6 +26,7 @@
   ],
   "dependencies": {
     "@prisma/client": "^5.20.0",
+    "@prisma": "^5.20.0",
     "@remix-run/css-bundle": "^2.13.1",
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
