@@ -2,10 +2,12 @@ import {
   ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
-  redirect,
 } from "@remix-run/node";
 import { createClient } from "graphql-ws";
-import { Form, useLoaderData } from "@remix-run/react";
+import {
+  useFetcher,
+  useLoaderData,
+} from "@remix-run/react";
 import {
   deployServiceInstance,
   getDeployments,
@@ -13,6 +15,7 @@ import {
 } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 import { useEffect } from "react";
+import LoadingIndicator from "~/components/loading-indicator";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -41,7 +44,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         environmentId: params.environmentId,
       });
       return json({ status: deployStatus });
-    // We handle two actions on this page because a redirect 
+    // We handle two actions on this page because a redirect
     // on a separate route won't preserve scroll position
     case "DELETE":
       const formData = await request.formData();
@@ -96,23 +99,32 @@ export default function Deployments() {
       <h1 className="mb-4 text-xs font-medium uppercase">History</h1>
       {/* TODO Handle cases where there is an empty history */}
       {historicalDeploys.map(({ id, status }) => (
-        <Deployment id={id} status={status} />
+        <Deployment key={id} id={id} status={status} />
       ))}
     </>
   );
 }
 
+
+
 function NewDeployment() {
+  const fetcher = useFetcher();
   return (
-    <Form method="post">
-      <button className="btn-primary" type="submit">
+    <fetcher.Form method="post">
+      <button
+        className="btn-primary"
+        type="submit"
+        disabled={fetcher.state !== "idle"}
+      >
+        {fetcher.state !== "idle" && <LoadingIndicator />}
         Create New Deploy
       </button>
-    </Form>
+    </fetcher.Form>
   );
 }
 
 function Deployment({ id, status, current = false }) {
+  const fetcher = useFetcher();
   return (
     <div className="lr-list-item">
       <p>DeploymentID: {id}</p>
@@ -120,15 +132,17 @@ function Deployment({ id, status, current = false }) {
       {current && (
         <div className="mt-2 flex flex-row space-x-4">
           {status !== "REMOVED" && (
-            <Form method="delete">
+            <fetcher.Form method="delete">
               <input type="hidden" name="deploymentId" value={id} />
               <button
                 type="submit"
-                className="flex h-[42px] transform items-center justify-center space-x-3 rounded-md border border-red-500 bg-red-500 px-3 py-2 text-base leading-6 text-white transition-transform duration-75 hover:border-red-600 hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-600 active:scale-95"
+                disabled={fetcher.state !== "idle"}
+                className="disabled:opacity-50; flex h-[42px] transform items-center justify-center space-x-3 rounded-md border border-red-500 bg-red-500 px-3 py-2 text-base leading-6 text-white transition-transform duration-75 hover:border-red-600 hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-600 disabled:cursor-not-allowed"
               >
+                {fetcher.state !== "idle" && <LoadingIndicator />}
                 Remove
               </button>
-            </Form>
+            </fetcher.Form>
           )}
           <NewDeployment />
         </div>

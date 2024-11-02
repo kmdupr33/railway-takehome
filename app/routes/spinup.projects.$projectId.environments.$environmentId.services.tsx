@@ -1,11 +1,10 @@
+import { json, LoaderFunctionArgs } from "@remix-run/node";
 import {
-  ActionFunctionArgs,
-  json,
-  LoaderFunctionArgs,
-  redirect,
-} from "@remix-run/node";
-import { Form, NavLink, Outlet, useLoaderData } from "@remix-run/react";
-import { getServices, deployServiceInstance } from "~/models/railway.server";
+  NavLink,
+  Outlet,
+  useLoaderData
+} from "@remix-run/react";
+import { getServices } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -13,8 +12,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const services = await getServices({ id: params.environmentId, userId });
   return json({ services });
 };
-
-
 
 export default function EnvironmentPicker() {
   const { services } = useLoaderData<typeof loader>();
@@ -24,8 +21,12 @@ export default function EnvironmentPicker() {
   return (
     <div>
       <p>Finally, pick a service:</p>
-      {services.map(({ serviceName, id, serviceId }, i) => (
-        <NavLink className="lr-list-item" to={`${serviceId}/deployments`}>
+      {services.map(({ serviceName, id, serviceId }) => (
+        <NavLink
+          key={id}
+          className="lr-list-item"
+          to={`${serviceId}/deployments`}
+        >
           Name: {serviceName} ID: {serviceId}
         </NavLink>
       ))}
@@ -33,4 +34,3 @@ export default function EnvironmentPicker() {
     </div>
   );
 }
-

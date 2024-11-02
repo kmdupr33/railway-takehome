@@ -10,6 +10,20 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 export default function Projects() {
   const data = useLoaderData<typeof loader>();
+  if (data.projectListItems.length === 0) {
+    return (
+      <p>
+        You don't have any projects. Create one{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://railway.app/new"
+        >
+          here.
+        </a>
+      </p>
+    );
+  }
   return (
     <>
       <h1 className="text-3xl font-medium">Time to spin up a container!</h1>
