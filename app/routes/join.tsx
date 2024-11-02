@@ -14,7 +14,7 @@ import { safeRedirect, validateEmail } from "~/utils";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) return redirect("/spinup");
   return json({});
 };
 
@@ -28,7 +28,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const email = formData.get("email");
   const password = formData.get("password");
   const railwayToken = formData.get("railway-token");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/notes");
+  const redirectTo = safeRedirect(formData.get("redirectTo"), "/spinup");
 
   const errors: Errors = {
     email: null,
@@ -100,7 +100,7 @@ export default function Join() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-400"
             >
               Email address
             </label>
@@ -129,7 +129,7 @@ export default function Join() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-400"
             >
               Password
             </label>
@@ -154,10 +154,10 @@ export default function Join() {
           <div>
             <label
               htmlFor="railway-token"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-400"
             >
               Railway Token
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-400">
                 Can't find your token? Check{" "}
                 <a className="underline" href="https://docs.railway.app/guides/public-api#creating-a-token">
                   here
@@ -192,7 +192,7 @@ export default function Join() {
             Create Account
           </button>
           <div className="flex items-center justify-center">
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm text-gray-400">
               Already have an account?{" "}
               <Link
                 className="text-blue-500 underline"
