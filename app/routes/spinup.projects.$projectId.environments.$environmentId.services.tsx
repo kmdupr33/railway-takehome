@@ -1,5 +1,10 @@
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import {
+  ActionFunctionArgs,
+  json,
+  LoaderFunctionArgs,
+  redirect,
+} from "@remix-run/node";
+import { Form, Outlet, useLoaderData } from "@remix-run/react";
 import { getServices, deployServiceInstance } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 
@@ -18,28 +23,29 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     serviceId,
     environmentId: params.environmentId,
   });
-  return json({ status });
+  if (!status.serviceInstanceDeploy) {
+    return json({ status });
+  }
+  return redirect(`${serviceId}/deployments`);
 };
 
 export default function EnvironmentPicker() {
-  const data = useLoaderData<typeof loader>();
+  const { services } = useLoaderData<typeof loader>();
+  if (services.length === 0) {
+    return "No services in this environment! Pick a different one.";
+  }
   return (
     <div>
-      <h1>Time to spin up a container!</h1>
-      <p>Now, pick a service:</p>
-      {data.services.map(({ serviceName, id, serviceId }, i) => (
-        <div key={i}>
-          <Link to={`${id}`}>
+      <p>Finally, pick a service:</p>
+      {services.map(({ serviceName, id, serviceId }, i) => (
+        <Form method="post" key={i}>
+          <input type="hidden" name="serviceId" value={serviceId} />
+          <button className="lr-list-item w-full text-left" type="submit">
             Name: {serviceName} ID: {serviceId}
-          </Link>
-          <Form method="post">
-            <input type="hidden" name="serviceId" value={serviceId} />
-            <button type="submit" className="btn-primary">
-              Deploy
-            </button>
-          </Form>
-        </div>
+          </button>
+        </Form>
       ))}
+      <Outlet />
     </div>
   );
 }

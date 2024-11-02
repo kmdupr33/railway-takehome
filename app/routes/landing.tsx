@@ -1,18 +1,6 @@
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { json, Link, Outlet, redirect } from "@remix-run/react";
-import { getUserId } from "~/session.server";
+import { Link } from "@remix-run/react";
 
-export const meta: MetaFunction = () => [
-  { title: "Light Rail | An interview project by Matt Dupree" },
-];
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const userId = await getUserId(request);
-  if (userId) return redirect("/spinup");
-  return json({});
-};
-
-export default function Index() {
+export default function Landing() {
   return (
     <main className="relative min-h-screen sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
@@ -27,9 +15,9 @@ export default function Index() {
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-                  <a href="/join" className="btn-secondary">
+                  <Link to="/join" className="btn-secondary">
                     Sign up
-                  </a>
+                  </Link>
                   <Link to="/login" className="btn-primary">
                     Log In
                   </Link>

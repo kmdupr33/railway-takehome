@@ -1,5 +1,5 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import { getEnvironments, getServices } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 
@@ -13,15 +13,15 @@ export default function EnvironmentPicker() {
   const data = useLoaderData<typeof loader>();
   return (
     <div>
-      <h1>Time to spin up a container!</h1>
       <p>Now, pick an environment:</p>
       {data.environments.map(({ name, id }, i) => (
         <div key={i}>
-          <Link to={`${id}/services`}>
+          <Link className="lr-list-item" to={`${id}/services`}>
             Name: {name} ID: {id}
           </Link>
         </div>
       ))}
+      <Outlet/>
     </div>
   );
 }

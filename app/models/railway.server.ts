@@ -1,24 +1,58 @@
-import type { User, Note } from "@prisma/client";
+import type { User } from "@prisma/client";
 
-import { prisma } from "~/db.server";
 import { railwayGqlQuery } from "~/utils";
+
+export async function getDeployment({
+  userId,
+  serviceId,
+  projectId,
+  environmentId,
+}) {
+  const res = await railwayGqlQuery(
+    userId,
+    /* GraphQL */ `
+    {
+      deployments(
+        first: 1
+        input: {
+          projectId: "${projectId}"
+          environmentId: "${environmentId}"
+          serviceId: "${serviceId}"
+        }
+      ) {
+        edges {
+          node {
+            id
+            updatedAt
+            status
+          }
+        }
+      }
+    }
+  `,
+  );
+  const { data } = await res.json();
+  return { deployment: data.deployments.edges[0].node };
+}
 
 export async function deployServiceInstance({
   userId,
   serviceId,
   environmentId,
 }) {
-  await railwayGqlQuery(
+  const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
       mutation {
         serviceInstanceDeploy(
-          environmentId: "ef02e2b3-17d9-4929-864b-d89387ac1468"
-          serviceId: "b56c946f-b7d0-4cd0-9182-e64cd6383648"
+          environmentId: "${environmentId}"
+          serviceId: "${serviceId}"
         )
       }
     `,
   );
+  const { data } = await res.json();
+  return { serviceInstanceDeploy: data.serviceInstanceDeploy };
 }
 
 export async function getServices({ id, userId }) {
@@ -84,24 +118,4 @@ export async function getProjectListItems({ userId }: { userId: User["id"] }) {
   );
   const json = await res.json();
   return json.data.me.projects.edges.map((n: any) => n.node);
-}
-
-export function createNote({
-  body,
-  title,
-  userId,
-}: Pick<Note, "body" | "title"> & {
-  userId: User["id"];
-}) {
-  return prisma.note.create({
-    data: {
-      title,
-      body,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
-    },
-  });
 }
