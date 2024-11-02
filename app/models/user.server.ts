@@ -37,7 +37,7 @@ export async function verifyLogin(
   email: User["email"],
   password: Password["hash"],
 ) {
-  const userWithPassword = await prisma.user.findUnique({
+  const userWithPassword = await prisma.user.findFirst({
     where: { email },
     include: {
       password: true,
