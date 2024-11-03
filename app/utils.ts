@@ -1,8 +1,9 @@
-import { useMatches } from "@remix-run/react";
-import { useMemo } from "react";
+import { useFetcher, useMatches, useRevalidator } from "@remix-run/react";
+import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
 
 import type { User } from "~/models/user.server";
 import { prisma } from "~/db.server";
+import { getDeployments } from "./models/railway.server";
 
 export async function railwayGqlQuery(userId: string, query: string) {
   const { railwayToken } = await prisma.user.findUniqueOrThrow({
@@ -44,6 +45,32 @@ export function safeRedirect(
   }
 
   return to;
+}
+
+interface Deployment {
+  id: string;
+  status: string;
+}
+
+/**
+ * We poll for deployment status updates since the GraphQL subscriptions don't
+ * appear to be fully supported. The actual web app doesn't use them. It polls.
+ * Moreover, the subscriptions are not a part of the API collection here:
+ * https://gql-collection-server.up.railway.app/railway_graphql_collection.json
+ * When I tried to use them, I got opaque error messages.
+ *
+ * @param id id of the deployment whose status we're polling
+ */
+export function usePolling() {
+  const revalidator = useRevalidator();
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (revalidator.state === "idle") {
+        revalidator.revalidate();
+      }
+    }, 3000);
+    return () => clearInterval(id);
+  }, [revalidator]);
 }
 
 /**

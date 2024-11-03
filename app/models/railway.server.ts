@@ -26,7 +26,7 @@ export async function getDeployments({
     /* GraphQL */ `
     {
       deployments(
-        first: 5
+        first: 5 
         input: {
           projectId: "${projectId}"
           environmentId: "${environmentId}"
@@ -45,7 +45,7 @@ export async function getDeployments({
   `,
   );
   const { data } = await res.json();
-  return { deployments: data.deployments.edges.map(({node}) => node) };
+  return { deployments: data.deployments.edges.map(({ node }) => node) };
 }
 
 export async function deployServiceInstance({
