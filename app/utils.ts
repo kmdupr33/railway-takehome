@@ -1,11 +1,10 @@
-import { useFetcher, useMatches, useRevalidator } from "@remix-run/react";
 import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useSyncExternalStore,
-} from "react";
+  ShouldRevalidateFunctionArgs,
+  useFetcher,
+  useMatches,
+  useRevalidator,
+} from "@remix-run/react";
+import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
 
 import type { User } from "~/models/user.server";
 import { prisma } from "~/db.server";
@@ -68,22 +67,25 @@ interface Deployment {
  * @param id id of the deployment whose status we're polling
  */
 export function usePolling() {
-  // Workaround bug w/ old reference to revalidator.
-  // Discussed here: https://github.com/remix-run/remix/issues/7188#issuecomment-2443323438
-  const interval = useRef(null);
-
   const revalidator = useRevalidator();
   useEffect(() => {
-    if (interval.current) {
-      clearInterval(interval.current);
-    }
-
-    interval.current = setInterval(() => {
+    const id = setInterval(() => {
       if (revalidator.state === "idle") {
         revalidator.revalidate();
       }
-    }, 5000);
+    }, 6000);
+    return () => clearInterval(id);
   }, [revalidator]);
+}
+
+export function parentOfPollingChildShouldRevalidate({
+  formData,
+  defaultShouldRevalidate
+}: ShouldRevalidateFunctionArgs) {
+  if (!formData) {
+    return false;
+  }
+  return defaultShouldRevalidate;
 }
 
 /**
