@@ -78,16 +78,6 @@ export function usePolling() {
   }, [revalidator]);
 }
 
-export function parentOfPollingChildShouldRevalidate({
-  formData,
-  defaultShouldRevalidate
-}: ShouldRevalidateFunctionArgs) {
-  if (!formData) {
-    return false;
-  }
-  return defaultShouldRevalidate;
-}
-
 /**
  * This base hook is used in other hooks to quickly search for specific data
  * across all loader data using useMatches.
