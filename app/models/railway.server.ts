@@ -131,5 +131,8 @@ export async function getProjectListItems({ userId }: { userId: User["id"] }) {
     `,
   );
   const json = await res.json();
+  if (json.errors?.[0].message === "Not Authorized") {
+    return { error: "Not authorized" };
+  }
   return json.data.me.projects.edges.map((n) => n.node);
 }

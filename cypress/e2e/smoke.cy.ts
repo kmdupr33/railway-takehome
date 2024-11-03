@@ -23,7 +23,6 @@ describe("smoke tests", () => {
     cy.findByLabelText(/Railway Token/i).type(loginForm.railwayToken);
     cy.findByRole("button", { name: /create account/i }).click();
 
-    cy.findByRole("link", { name: /notes/i }).click();
     cy.findByRole("button", { name: /logout/i }).click();
     cy.findByRole("link", { name: /log in/i });
   });

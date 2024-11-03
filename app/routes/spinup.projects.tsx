@@ -6,11 +6,17 @@ import { requireUserId } from "~/session.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
-  const projectListItems = await getProjectListItems({ userId });
-  return json({ projectListItems });
+  const response = await getProjectListItems({ userId });
+  if (response.error) {
+    return json({ error: response.error, projectListItems: null });
+  }
+  return json({ projectListItems: response, error: null });
 };
 export default function Projects() {
   const data = useLoaderData<typeof loader>();
+  if (data.error) {
+    return "Invalid railway token. Please create a new account to try again. Sorry for the jank.";
+  }
   if (data.projectListItems.length === 0) {
     return (
       <p>
