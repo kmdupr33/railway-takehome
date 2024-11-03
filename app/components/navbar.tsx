@@ -1,12 +1,12 @@
-import { Form } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 
 export default function Navbar() {
     return (
       <div className="relative z-10 border border-gray-100 bg-transparent px-6">
         <header className="flex items-center justify-between py-3 md:h-[60px] md:py-0">
-          <h1 className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left font-medium">
+          <Link to="/spinup/projects" className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left font-medium">
             Light Rail
-          </h1>
+          </Link>
           <Form method="post" action="/logout">
             <button
               className="flex h-[34px] transform items-center justify-center space-x-2 rounded-md border border-transparent bg-transparent px-3 py-1.5 text-sm leading-5 text-red-500 transition-transform duration-75 hover:border-red-100 hover:bg-red-100 focus:outline-none focus-visible:bg-red-100 focus-visible:ring-2 focus-visible:ring-red-600 active:scale-95"
