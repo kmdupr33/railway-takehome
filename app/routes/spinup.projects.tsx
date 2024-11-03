@@ -31,7 +31,7 @@ export default function Projects() {
       <div>
         {data.projectListItems.map(({ name, id }, i) => (
           <NavLink className="lr-list-item" key={i} to={`${id}/environments`}>
-            Name: {name} ID: {id}
+            {name}
           </NavLink>
         ))}
       </div>

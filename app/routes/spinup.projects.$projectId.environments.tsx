@@ -17,7 +17,7 @@ export default function EnvironmentPicker() {
       {data.environments.map(({ name, id }, i) => (
         <div key={i}>
           <NavLink className="lr-list-item" to={`${id}/services`}>
-            Name: {name} ID: {id}
+            {name}
           </NavLink>
         </div>
       ))}

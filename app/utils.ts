@@ -58,7 +58,7 @@ interface Deployment {
  * Moreover, the subscriptions are not a part of the API collection here:
  * https://gql-collection-server.up.railway.app/railway_graphql_collection.json
  * When I tried to use them, I got opaque error messages.
- *
+ * 
  * @param id id of the deployment whose status we're polling
  */
 export function usePolling() {

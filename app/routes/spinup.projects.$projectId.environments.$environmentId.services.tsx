@@ -27,7 +27,7 @@ export default function EnvironmentPicker() {
           className="lr-list-item"
           to={`${serviceId}/deployments`}
         >
-          Name: {serviceName} ID: {serviceId}
+          {serviceName}
         </NavLink>
       ))}
       <Outlet />

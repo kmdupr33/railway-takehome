@@ -9,16 +9,14 @@
   }
   .btn-secondary {
     /* text-foreground  */
-    @apply duration-75 text-base text-black bg-gray-100 flex h-[42px] transform items-center justify-center space-x-2 rounded-md border border-gray-200 px-3 py-1.5 leading-5 transition-transform hover:border-gray-200 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-600 active:scale-95 disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:opacity-50 dark:bg-gray-100 dark:hover:bg-gray-200;
+    @apply flex h-[42px] transform items-center justify-center space-x-2 rounded-md border border-gray-200 bg-gray-100 px-3 py-1.5 text-base leading-5 text-black transition-transform duration-75 hover:border-gray-200 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-600 active:scale-95 disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:opacity-50 dark:bg-gray-100 dark:hover:bg-gray-200;
   }
   /* prefix with "lr" (abbreviation of "LightRail," the name of this app) to avoid conflict w/ tialwind builtin class list-item */
   .lr-list-item {
-    @apply block rounded-lg bg-[hsl(0,0%,98%)] p-6 hover:bg-gray-100 mb-4
+    @apply mb-4 block rounded-lg bg-[hsl(0,0%,98%)] p-6 font-medium hover:bg-gray-100;
   }
 
   .lr-list-item.active {
-    @apply bg-green-50
+    @apply bg-green-50;
   }
 }
-
-
