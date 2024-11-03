@@ -70,7 +70,7 @@ export function usePolling() {
   const revalidator = useRevalidator();
   useEffect(() => {
     const id = setInterval(() => {
-      if (revalidator.state === "idle") {
+      if (navigator.onLine && revalidator.state === "idle") {
         revalidator.revalidate();
       }
     }, 6000);
