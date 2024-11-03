@@ -1,4 +1,5 @@
 import { useFetcher } from "@remix-run/react";
+
 import LoadingIndicator from "./loading-indicator";
 
 export default function NewDeployment() {
@@ -10,7 +11,7 @@ export default function NewDeployment() {
         type="submit"
         disabled={fetcher.state !== "idle"}
       >
-        {fetcher.state !== "idle" && <LoadingIndicator />}
+        {fetcher.state !== "idle" ? <LoadingIndicator /> : null}
         Create New Deploy
       </button>
     </fetcher.Form>

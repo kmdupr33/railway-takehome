@@ -157,7 +157,7 @@ export default function Join() {
             >
               Railway Token
               <p className="text-xs text-gray-400">
-                Can't find your token? Check{" "}
+                Can&apos;t find your token? Check{" "}
                 <a className="underline" href="https://docs.railway.app/guides/public-api#creating-a-token">
                   here
                 </a>

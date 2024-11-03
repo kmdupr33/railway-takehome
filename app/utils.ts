@@ -1,14 +1,11 @@
 import {
-  ShouldRevalidateFunctionArgs,
-  useFetcher,
   useMatches,
   useRevalidator,
 } from "@remix-run/react";
-import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo } from "react";
 
-import type { User } from "~/models/user.server";
 import { prisma } from "~/db.server";
-import { getDeployments } from "./models/railway.server";
+import type { User } from "~/models/user.server";
 
 export async function railwayGqlQuery(userId: string, query: string) {
   const { railwayToken } = await prisma.user.findUniqueOrThrow({
@@ -50,11 +47,6 @@ export function safeRedirect(
   }
 
   return to;
-}
-
-interface Deployment {
-  id: string;
-  status: string;
 }
 
 /**

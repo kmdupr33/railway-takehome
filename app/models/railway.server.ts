@@ -131,5 +131,5 @@ export async function getProjectListItems({ userId }: { userId: User["id"] }) {
     `,
   );
   const json = await res.json();
-  return json.data.me.projects.edges.map((n: any) => n.node);
+  return json.data.me.projects.edges.map((n) => n.node);
 }

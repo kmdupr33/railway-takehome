@@ -1,13 +1,14 @@
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
-import { useFetcher, useLoaderData, useParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
+
+import { Deployment } from "~/components/deployment";
+import NewDeployment from "~/components/new-deployment";
 import {
   deployServiceInstance,
   getDeployments,
   removeDeployment,
 } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
-import { Deployment } from "~/components/deployment";
-import NewDeployment from "~/components/new-deployment";
 import { usePolling } from "~/utils";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -25,7 +26,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
   switch (request.method) {
-    case "POST":
+    case "POST": {
       const serviceId = params.serviceId;
       const deployStatus = await deployServiceInstance({
         userId,
@@ -33,13 +34,15 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         environmentId: params.environmentId,
       });
       return json({ status: deployStatus });
+    }
     // We handle two actions on this page because a redirect
     // on a separate route won't preserve scroll position
-    case "DELETE":
+    case "DELETE": {
       const formData = await request.formData();
       const deploymentId = formData.get("deploymentId");
       const removalStatus = await removeDeployment({ userId, deploymentId });
       return json({ status: removalStatus });
+    }
   }
 };
 

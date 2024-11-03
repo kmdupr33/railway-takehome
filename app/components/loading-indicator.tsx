@@ -1,4 +1,8 @@
-export default function LoadingIndicator({ black = false }) {
+export default function LoadingIndicator({
+  black = false,
+}: {
+  black: boolean;
+}) {
   // TODO: This could flicker if the requests are v fast. Should probably fix that.
   return (
     <svg

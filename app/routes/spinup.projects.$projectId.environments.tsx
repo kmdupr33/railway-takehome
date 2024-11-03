@@ -1,6 +1,7 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
-import { getEnvironments, getServices } from "~/models/railway.server";
+
+import { getEnvironments } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {

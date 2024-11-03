@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { json, Link, Outlet, redirect } from "@remix-run/react";
+import { json, Link, redirect } from "@remix-run/react";
+
 import { getUserId } from "~/session.server";
 
 export const meta: MetaFunction = () => [
