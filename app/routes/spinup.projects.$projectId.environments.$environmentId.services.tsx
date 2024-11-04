@@ -1,6 +1,7 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 
+import PendingNavLink from "~/components/pending-nav-link";
 import { getServices } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 
@@ -23,13 +24,12 @@ export default function EnvironmentPicker() {
     <div>
       <p>Finally, pick a service:</p>
       {services.map(({ serviceName, id, serviceId }) => (
-        <NavLink
+        <PendingNavLink
           key={id}
-          className="lr-list-item"
           to={`${serviceId}/deployments`}
         >
           {serviceName}
-        </NavLink>
+        </PendingNavLink>
       ))}
       <Outlet />
     </div>

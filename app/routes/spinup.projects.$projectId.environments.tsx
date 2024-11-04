@@ -1,7 +1,9 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData, useMatches } from "@remix-run/react";
 
+import PendingNavLink from "~/components/pending-nav-link";
 import { getEnvironments } from "~/models/railway.server";
+import { handle as servicesHandle } from "~/routes/spinup.projects.$projectId.environments.$environmentId.services";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -19,11 +21,9 @@ export default function EnvironmentPicker() {
     <div>
       <p>Now, pick an environment:</p>
       {data.environments.map(({ name, id }, i) => (
-        <div key={i}>
-          <NavLink className="lr-list-item" to={`${id}/services`}>
-            {name}
-          </NavLink>
-        </div>
+        <PendingNavLink key={i} to={`${id}/services`}>
+          {name}
+        </PendingNavLink>
       ))}
       <Outlet />
     </div>

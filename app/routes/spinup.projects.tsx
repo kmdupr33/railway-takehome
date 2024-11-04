@@ -1,5 +1,6 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import PendingNavLink from "~/components/pending-nav-link";
 
 import { getProjectListItems } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
@@ -35,9 +36,9 @@ export default function Projects() {
       <p>First, pick a project:</p>
       <div>
         {data.projects!.map(({ name, id }, i) => (
-          <NavLink className="lr-list-item" key={i} to={`${id}/environments`}>
+          <PendingNavLink key={i} to={`${id}/environments`}>
             {name}
-          </NavLink>
+          </PendingNavLink>
         ))}
       </div>
       <Outlet />
