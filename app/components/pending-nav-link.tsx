@@ -11,13 +11,13 @@ export default function PendingNavLink({
   const path = useResolvedPath(to);
   const navigation = useNavigation();
   // Rolling our own end-like prop described here: https://remix.run/docs/en/main/components/nav-link#end
-  const end = path.pathname.length === navigation.location?.pathname.length;
+  const navigatingHere = path.pathname === navigation.location?.pathname;
   return (
     <NavLink key={key} className="lr-list-item" to={to}>
       {({ isPending }) => (
         <>
           {children}
-          {isPending && end ? (
+          {isPending && navigatingHere ? (
             <span className="ml-2">
               <LoadingIndicator black />
             </span>
