@@ -42,7 +42,7 @@ export async function getDeployments({
   const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
-        first: 5 
+        first: 5, 
         input: {
           projectId: "${projectId}"
           environmentId: "${environmentId}"
@@ -61,7 +61,6 @@ export async function getDeployments({
   `,
   );
   const { data } = await res.json();
-
   return {
     deployments: data.deployments.edges.map(({ node }: DeploymentNode) => node),
   };
