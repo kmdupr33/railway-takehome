@@ -21,7 +21,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/spinup/projects");
+  const redirectTo = safeRedirect(
+    formData.get("redirectTo"),
+    "/spinup/projects",
+  );
   const remember = formData.get("remember");
 
   if (!validateEmail(email)) {
@@ -139,10 +142,7 @@ export default function LoginPage() {
           </div>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="btn-primary w-full"
-          >
+          <button type="submit" className="btn-primary w-full">
             Log in
           </button>
           <div className="flex items-center justify-between">

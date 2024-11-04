@@ -9,7 +9,7 @@ describe("smoke tests", () => {
     const loginForm = {
       email: `${faker.internet.userName()}@example.com`,
       password: faker.internet.password(),
-      railwayToken: faker.internet.password()
+      railwayToken: faker.internet.password(),
     };
 
     cy.then(() => ({ email: loginForm.email })).as("user");

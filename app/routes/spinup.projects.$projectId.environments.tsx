@@ -25,7 +25,7 @@ export default function EnvironmentPicker() {
           </NavLink>
         </div>
       ))}
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }

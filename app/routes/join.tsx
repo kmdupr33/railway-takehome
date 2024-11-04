@@ -27,7 +27,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const email = formData.get("email");
   const password = formData.get("password");
   const railwayToken = formData.get("railway-token");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/spinup/projects");
+  const redirectTo = safeRedirect(
+    formData.get("redirectTo"),
+    "/spinup/projects",
+  );
 
   const errors: Errors = {
     email: null,
@@ -158,7 +161,10 @@ export default function Join() {
               Railway Token
               <p className="text-xs text-gray-400">
                 Can&apos;t find your token? Check{" "}
-                <a className="underline" href="https://docs.railway.app/guides/public-api#creating-a-token">
+                <a
+                  className="underline"
+                  href="https://docs.railway.app/guides/public-api#creating-a-token"
+                >
                   here
                 </a>
               </p>
@@ -184,10 +190,7 @@ export default function Join() {
           </div>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="btn-primary w-full"
-          >
+          <button type="submit" className="btn-primary w-full">
             Create Account
           </button>
           <div className="flex items-center justify-center">

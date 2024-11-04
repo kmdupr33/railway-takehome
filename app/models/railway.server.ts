@@ -42,11 +42,11 @@ export async function getDeployments({
   const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
-    deployments(
-        first: 5, 
+    { deployments(
+        first: 5
         input: {
-          projectId: "${projectId}"
-          environmentId: "${environmentId}"
+         projectId: "${projectId}",
+          environmentId: "${environmentId}",
           serviceId: "${serviceId}"
         }
       ) {
