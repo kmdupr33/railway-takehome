@@ -7,17 +7,15 @@ import { requireUserId } from "~/session.server";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
   const response = await getProjectListItems({ userId });
-  if (response.error) {
-    return json({ error: response.error, projectListItems: null });
-  }
-  return json({ projectListItems: response, error: null });
+  return json(response);
 };
 export default function Projects() {
   const data = useLoaderData<typeof loader>();
   if (data.error) {
     return "Invalid railway token. Please create a new account to try again. Sorry for the jank.";
   }
-  if (data.projectListItems.length === 0) {
+  // If error is null, projects is non-null
+  if (data.projects!.length === 0) {
     return (
       <p>
         You don&apos;t have any projects. Create one{" "}
@@ -36,7 +34,7 @@ export default function Projects() {
       <h1 className="text-3xl font-medium">Time to spin up a container!</h1>
       <p>First, pick a project:</p>
       <div>
-        {data.projectListItems.map(({ name, id }, i) => (
+        {data.projects!.map(({ name, id }, i) => (
           <NavLink className="lr-list-item" key={i} to={`${id}/environments`}>
             {name}
           </NavLink>

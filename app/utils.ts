@@ -1,7 +1,4 @@
-import {
-  useMatches,
-  useRevalidator,
-} from "@remix-run/react";
+import { Params, useMatches, useRevalidator } from "@remix-run/react";
 import { useEffect, useMemo } from "react";
 
 import { prisma } from "~/db.server";

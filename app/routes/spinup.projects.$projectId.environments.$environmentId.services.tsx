@@ -1,16 +1,16 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import {
-  NavLink,
-  Outlet,
-  useLoaderData
-} from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { getServices } from "~/models/railway.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
-  const services = await getServices({ id: params.environmentId, userId });
+  const { environmentId } = params;
+  if (!environmentId) {
+    throw new Error("environmentId missing from params");
+  }
+  const services = await getServices({ id: environmentId, userId });
   return json({ services });
 };
 

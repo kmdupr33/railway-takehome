@@ -14,6 +14,11 @@ import { usePolling } from "~/utils";
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
   const { serviceId, environmentId, projectId } = params;
+  if (!serviceId || !projectId || !environmentId) {
+    throw new Error(
+      `One of the following params is missing: serviceId: ${serviceId}, projectId: ${projectId}, environmentId: ${environmentId}`,
+    );
+  }
   const { deployments } = await getDeployments({
     serviceId,
     projectId,
@@ -27,11 +32,14 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
   switch (request.method) {
     case "POST": {
-      const serviceId = params.serviceId;
+      const { serviceId, environmentId } = params;
+      if (!serviceId || !environmentId) {
+        throw new Response("Bad Request", { status: 400 });
+      }
       const deployStatus = await deployServiceInstance({
         userId,
         serviceId,
-        environmentId: params.environmentId,
+        environmentId,
       });
       return json({ status: deployStatus });
     }
@@ -40,6 +48,9 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     case "DELETE": {
       const formData = await request.formData();
       const deploymentId = formData.get("deploymentId");
+      if (!deploymentId || typeof deploymentId !== "string") {
+        throw new Response("Bad Request", { status: 400 });
+      }
       const removalStatus = await removeDeployment({ userId, deploymentId });
       return json({ status: removalStatus });
     }

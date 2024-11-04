@@ -10,7 +10,7 @@ export function Deployment({
 }: {
   id: string;
   status: string;
-  current: boolean;
+  current?: boolean;
 }) {
   const fetcher = useFetcher();
   return (

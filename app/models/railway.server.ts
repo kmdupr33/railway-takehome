@@ -2,7 +2,13 @@ import type { User } from "@prisma/client";
 
 import { railwayGqlQuery } from "~/utils";
 
-export async function removeDeployment({ userId, deploymentId }) {
+export async function removeDeployment({
+  userId,
+  deploymentId,
+}: {
+  userId: string;
+  deploymentId: string;
+}) {
   const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
@@ -15,17 +21,27 @@ export async function removeDeployment({ userId, deploymentId }) {
   return { deployRemove: data.deploymentRemove };
 }
 
+interface DeploymentNode {
+  node: {
+    id: string;
+    updatedAt: string;
+    status: string;
+  };
+}
 export async function getDeployments({
   userId,
   serviceId,
   projectId,
   environmentId,
-}) {
+}: {
+  userId: string;
+  serviceId: string;
+  projectId: string;
+  environmentId: string;
+}): Promise<{ deployments: DeploymentNode["node"][] }> {
   const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
-    {
-      deployments(
         first: 5 
         input: {
           projectId: "${projectId}"
@@ -45,13 +61,20 @@ export async function getDeployments({
   `,
   );
   const { data } = await res.json();
-  return { deployments: data.deployments.edges.map(({ node }) => node) };
+
+  return {
+    deployments: data.deployments.edges.map(({ node }: DeploymentNode) => node),
+  };
 }
 
 export async function deployServiceInstance({
   userId,
   serviceId,
   environmentId,
+}: {
+  userId: string;
+  serviceId: string;
+  environmentId: string;
 }) {
   const res = await railwayGqlQuery(
     userId,
@@ -69,7 +92,16 @@ export async function deployServiceInstance({
   return { serviceInstanceDeploy: data.serviceInstanceDeploy };
 }
 
-export async function getServices({ id, userId }) {
+interface ServiceInstanceNode {
+  node: { id: string; serviceName: string; serviceId: string };
+}
+export async function getServices({
+  id,
+  userId,
+}: {
+  id: string;
+  userId: string;
+}): Promise<ServiceInstanceNode["node"][]> {
   const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
@@ -89,10 +121,24 @@ export async function getServices({ id, userId }) {
     `,
   );
   const { data } = await res.json();
-  return data.environment.serviceInstances.edges.map(({ node }) => node);
+  return data.environment.serviceInstances.edges.map(
+    ({ node }: ServiceInstanceNode) => node,
+  );
 }
 
-export async function getEnvironments({ id, userId }) {
+interface EnvironmentNode {
+  node: {
+    name: string;
+    id: string;
+  };
+}
+export async function getEnvironments({
+  id,
+  userId,
+}: {
+  id: string;
+  userId: string;
+}): Promise<EnvironmentNode["node"][]> {
   const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
@@ -109,10 +155,24 @@ export async function getEnvironments({ id, userId }) {
     `,
   );
   const { data } = await res.json();
-  return data.environments.edges.map(({ node }) => node);
+  return data.environments.edges.map(({ node }: EnvironmentNode) => node);
 }
 
-export async function getProjectListItems({ userId }: { userId: User["id"] }) {
+interface Project {
+  id: string;
+  name: string;
+}
+interface ProjectNode {
+  node: Project;
+}
+export async function getProjectListItems({
+  userId,
+}: {
+  userId: User["id"];
+}): Promise<{
+  error: string | null;
+  projects: Project[] | null;
+}> {
   const res = await railwayGqlQuery(
     userId,
     /* GraphQL */ `
@@ -132,7 +192,10 @@ export async function getProjectListItems({ userId }: { userId: User["id"] }) {
   );
   const json = await res.json();
   if (json.errors?.[0].message === "Not Authorized") {
-    return { error: "Not authorized" };
+    return { error: "Not authorized", projects: null };
   }
-  return json.data.me.projects.edges.map((n) => n.node);
+  return {
+    error: null,
+    projects: json.data.me.projects.edges.map(({ node }: ProjectNode) => node),
+  };
 }
